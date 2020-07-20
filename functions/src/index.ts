@@ -29,12 +29,15 @@ exports.paymentCapture = functions.region('europe-west2').firestore
         const shopId = context.params.shopId;
         const paymentId = context.params.paymentId;
 
-        if (newValue.charge !== 'undefined') return "Payment Already Processed";
-
-        console.log("Starting Payment Capture")
+        if (newValue.charge !== undefined) {
+            console.log("already processed")
+            return "Payment Already Processed";
+        }
 
         async function capturePayment(){
-            const response = await paymentsApi.CompletePayment({"payment_id":paymentId})
+            const body = new SquareConnect.CompletePaymentRequest();
+
+            const response = await paymentsApi.completePayment(newValue.payment.id, body)
 
             await captureResponseToFirestore(response);
 
@@ -42,10 +45,6 @@ exports.paymentCapture = functions.region('europe-west2').firestore
         }
 
         async function captureResponseToFirestore(captureResponse: any) {
-
-            console.log(captureResponse.type.toString())
-
-            console.log("Capture Response: " + captureResponse.toString())
 
             await admin.firestore()
                 .doc(`/Shops/${shopId}/PastTransactions/${paymentId}`)
