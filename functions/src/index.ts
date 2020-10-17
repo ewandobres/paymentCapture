@@ -16,7 +16,7 @@ const {
 const defaultClient = SquareConnect.ApiClient.instance;
 
 const oauth2 = defaultClient.authentications['oauth2'];
-oauth2.accessToken = "EAAAEGHqnSltURHr2q_mAb_beZoBIc3iyteekRCAFWU7PfDh0Qz1mqV-HL-nJl32";
+oauth2.accessToken = "";
 
 defaultClient.basePath = "https://connect.squareupsandbox.com";
 
